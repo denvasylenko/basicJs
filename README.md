@@ -1,28 +1,43 @@
-### **Scope**
+# JS CORE
 
-#### **JS CORE**
+## Scope & Immutability
 
-Immutability of Strings
-Explanation:
-Primitive types like strings are immutable. Once a string is created, it cannot be altered. When you try to change a string, a new string is created instead.
+### **Immutability of Primitives**
+
+**Explanation:**
+
+Primitive values like numbers, strings, booleans, null, undefined, and symbols are immutable in JavaScript. This means that their value cannot be changed after creation.
+
+**Example:**
 ```javascript
 let str = "Hello";
 str[0] = "h";  // Trying to change the first character
 console.log(str);  // Outputs: "Hello" (the original string remains unchanged)
-
 ```
 
-Immutability Objects Explanation: 
-Primitive values are immutable, whereas objects are mutable. This leads to different behaviors when modifying or assigning values.
+### **Mutable vs Immutable Objects**
 
+**Explanation:**
+
+While primitives are immutable, objects (including arrays and functions) are mutable. Changes to objects affect all references to that object.
+
+**Example:**
 ```javascript
-let obj = {name: "John"};
+let obj = { name: "John" };
 let objCopy = obj;  // objCopy references the same object
 objCopy.name = "Doe";
-console.log(obj.name);  // Outputs: "Doe", object is mutable and was modified
-
+console.log(obj.name);  // Outputs: "Doe" (Object is mutable)
 ```
-Prevent Mutation (Immutable Operations):
+
+### **Preventing Mutation (Creating Immutable Objects)**
+
+#### **Object.freeze**
+
+**Explanation:**
+
+`Object.freeze()` prevents changes to an object's properties, but only at the first level. Nested objects can still be modified unless they are also frozen.
+
+**Example:**
 ```javascript
 // freeze only first level
 let obj = Object.freeze({name: "John", obj: {name: "Jhon"}});
@@ -32,26 +47,33 @@ console.log(obj.name);  // Outputs: "John"
 console.log(obj.obj.name);  // Outputs: "Doe"
 ```
 
-Copying Objects
+### **Shallow vs Deep Copy**
 
-spread will copy only first level and deep object will remain reference
+**Explanation:**
+
+When copying objects, shallow copies only duplicate the first level, whereas deep copies duplicate all levels. Shallow copying techniques like the spread operator or Object.assign() don’t clone nested objects.
+
+**Example (Shallow Copy):**
 ```javascript
+const person = { name: "Alice", details: { age: 25 } };
 const shallowCopy = { ...person };
-shallowCopy.age = 40;
-console.log(person.age);  // Outputs: 35 (original object remains unchanged)
-console.log(shallowCopy.age);  // Outputs: 40 (copy is modified)
-
+shallowCopy.details.age = 30;
+console.log(person.details.age);  // Outputs: 30 (nested object reference is shared)
 ```
-For a deep copy of objects containing nested objects, you need to use libraries like Lodash or structured cloning methods, as Object.assign() and the spread operator only perform shallow copies.
-
+**Example (Deep Copy):**
 ```javascript
-// this approach will not copy function
-const deepCopy = JSON.parse(JSON.stringify(person));  // Deep copies only non-circular objects
+const deepCopy = JSON.parse(JSON.stringify(person));  // Deep copy without circular refs
+deepCopy.details.age = 30;
+console.log(person.details.age);  // Outputs: 25 (original object is unaffected)
 ```
 
-Object Destructuring
+## Object Destructuring
 
-Destructuring allows you to extract values from an object and assign them to variables in a concise way.
+**Explanation:**
+
+Object destructuring allows for extracting multiple properties from an object and assigning them to variables in a concise manner.
+
+**Example:**
 
 ```javascript
 const { name, age } = person;
@@ -60,33 +82,52 @@ console.log(age);  // Outputs: 35
 
 ```
 
+### Destructuring with Aliases
+**Explanation:**
+
+You can also rename variables when destructuring using the colon `(:)` syntax.
+
+**Example:**
+
 ```javascript
 const { name: personName, age: personAge } = person;
 console.log(personName);  // Outputs: "Bob"
 console.log(personAge);  // Outputs: 35
 ```
 
-Object Property Shorthand
 
+## Merging and Copying Objects
+
+### Spread Operator
+
+**Explanation:**
+
+The spread operator `(...)` can be used to copy or merge objects. It performs a shallow copy, meaning nested objects remain referenced.
+
+**Example:**
 ```javascript
-const firstName = "Charlie";
-const age = 28;
-
-const person = { firstName, age };  // Shorthand syntax
-console.log(person);  // Outputs: { firstName: "Charlie", age: 28 }
+const objA = { a: 1 };
+const objB = { b: 2 };
+const merged = { ...objA, ...objB };
+console.log(merged);  // Outputs: { a: 1, b: 2 }
 ```
 
-Merging Objects
+### Deep Merge
 
-```javascript
-// but again if you have deep structure then it's preferable use cloneDeep
-const mergedWithSpread = { ...objA, ...objB };
-console.log(mergedWithSpread);  // Outputs: { a: 1, b: 2 }
+**Explanation:**
 
-```
+For deep copying/merging, libraries like Lodash’s cloneDeep or native cloning methods like structuredClone() (available in newer browsers) are required.
 
-### **Coercion**
-String Coercion: When a non-string value is used in a context where a string is expected, JavaScript will convert it to a string.
+
+## Coercion
+
+### String Coercione
+
+**Explanation:**
+
+When performing operations between strings and numbers, JavaScript automatically converts (coerces) values to strings or numbers as needed.
+
+**Example:**
 
 ```javascript
 let result = 123 + "456";  
@@ -94,8 +135,13 @@ console.log(result);  // Outputs: "123456"
 // Explanation: The number 123 is coerced to a string and concatenated with "456".
 ```
 
-Number Coercion: When a non-number value is used in a numeric context, JavaScript will attempt to convert it to a number.
+### Number Coercione
 
+**Explanation:**
+
+In numeric operations, strings that represent numbers are coerced into actual numbers. This leads to implicit type conversions.
+
+**Example:**
 
 ```javascript
 let result = "5" * 2;
@@ -103,15 +149,13 @@ console.log(result);  // Outputs: 10
 // Explanation: The string "5" is coerced to the number 5, then multiplied by 2.
 ```
 
-Boolean Coercion: JavaScript converts values to booleans in contexts such as conditions in if statements. The following values are falsy:
+### Boolean Coercion
 
-- false
-- 0
-- "" (empty string)
-- null
-- undefined
-- NaN (Not-a-Number)
-- Everything else is truthy.
+**Explanation:**
+
+Certain values in JavaScript are considered “falsy”, meaning they coerce to false in boolean contexts. These include `false`, `0`, `""`, `null`, `undefined`, and `NaN`. All other values are considered “truthy”.
+
+**Example:**
 
 ```javascript
 if (0) {
@@ -125,9 +169,12 @@ if ("Hello") {
 }
 ```
 
-Coercion in Comparisons (Double vs Triple Equals):
+### Double Equals (==) vs Triple Equals (===)
+**Explanation:**
 
-- == (double equals) allows coercion before comparing, while === (triple equals) does not.
+`==` allows type coercion when comparing values, while `===` requires both the value and the type to be the same.
+
+**Example:**
 
 ```javascript
 console.log(5 == "5");  // Outputs: true
@@ -137,7 +184,12 @@ console.log(5 === "5");  // Outputs: false
 // Explanation: No coercion happens here, so number 5 is not equal to string "5".
 ```
 
-Coercion in Logical Operators (|| and &&): Logical operators (|| and &&) often perform coercion by converting values to booleans, but they return the actual value rather than a boolean.
+## Handling Coercion in Logical Operations
+**Explanation:**
+
+Logical operators `(&&, ||)` coerce values to booleans, but they return the actual value rather than `true` or `false`.
+
+**Example:**
 
 ```javascript
 console.log(0 || "default");  // Outputs: "default"
@@ -146,8 +198,25 @@ console.log(0 || "default");  // Outputs: "default"
 console.log(1 && "next");  // Outputs: "next"
 // Explanation: 1 is truthy, so "next" is returned.
 ```
+
+## Coercion and 3 > 2 > 1
+**Explanation:**
+
+When null or undefined are used in arithmetic operations or comparisons, they are coerced as well.
+
+**Example:**
+
+```javascript
+console.log(3 > 2 > 1);  // Outputs: false
+// Explanation: 3 > 2 evaluates to true (which is 1 in JS), then 1 > 1 is false
+```
+
+## Coercion with null and undefined
+**Explanation:**
+
 Coercion with null and undefined: When null or undefined are used in arithmetic operations or comparisons, they are coerced as well.
 
+**Example:**
 
 ```javascript
 console.log(null + 1);  // Outputs: 1
@@ -157,19 +226,12 @@ console.log(undefined + 1);  // Outputs: NaN
 // Explanation: `undefined` is coerced to `NaN` in numeric context, resulting in `NaN`.
 ```
 
+## Object-to-Primitive Conversion
+**Explanation:**
 
-**Coercion and 3 > 2 > 1**
-Explanation: When JavaScript compares 3 > 2 > 1, it performs comparisons step by step.
+Objects can define how they convert to primitive values using the `valueOf()` method or `Symbol.toPrimitive` method. This is useful when an object is used in arithmetic or string contexts.
 
-Code Example:
-
-```javascript
-console.log(3 > 2 > 1);  // Outputs: false
-// Explanation: 3 > 2 evaluates to true (which is 1 in JS), then 1 > 1 is false
-```
-
-Convert Object to Primitive (valueOf/Symbol.toPrimitive)
-Explanation: Objects can define how they convert to primitive values using valueOf or Symbol.toPrimitive.
+**Example:**
 
 ```javascript
 let obj = {
@@ -183,12 +245,15 @@ console.log(+obj);  // Outputs: 123
 
 ```
 
-Rest Operator
+## Rest and Spread Operators
 
-The rest operator (...) allows you to collect all remaining elements into an array or object. It is commonly used in function parameters and object/array destructuring.
+### Rest Operator `(...)`
 
-**Example 1**: Rest in Function Parameters
-The rest operator gathers all remaining arguments into an array.
+**Explanation:**
+
+The rest operator is used to collect multiple arguments or elements into an array. It is useful in function parameters and array destructuring.
+
+**Example:**
 
 ```javascript
 // In this example, ...numbers collects all the arguments into an array, which can then be processed using reduce().
@@ -199,8 +264,10 @@ function sum(...numbers) {
 console.log(sum(1, 2, 3, 4));  // Outputs: 10
 ```
 
-**Example 2**: Rest in Array Destructuring
+Rest in Array Destructuring
 You can use the rest operator to gather the "rest" of the elements in an array during destructuring.
+
+**Example 2:** 
 
 ```javascript
 const [first, ...rest] = [1, 2, 3, 4, 5];
@@ -209,14 +276,27 @@ console.log(rest);  // Outputs: [2, 3, 4, 5]
 
 ```
 
-Spread Operator
+Rest in Object Destructuring
+You can use the rest operator to gather the "rest" of the elements in an object during destructuring.
 
-Explanation:
-The spread operator (...) allows you to expand an array or object. It is useful for copying arrays/objects and merging them.
+**Example 3:** 
+
+```javascript
+const {first, ...rest} = {name: "Jhon", surname: "Enim", age: 45};
+console.log(first);  // Outputs: Jhon
+console.log(rest);  // Outputs: {surname: "Enim", age: 45}
+
+```
+
+### Spread Operator (...)
+
+**Explanation:**
+
+The spread operator expands arrays or objects. It is commonly used to copy or merge arrays and objects.
+
+**Example:**
 
 **Example 1: Spread in Arrays**
-
-The spread operator can be used to spread elements of one array into another.
 
 ```javascript
 const arr1 = [1, 2, 3];
@@ -224,8 +304,6 @@ const arr2 = [4, 5, 6];
 const combined = [...arr1, ...arr2];
 console.log(combined);  // Outputs: [1, 2, 3, 4, 5, 6]
 ```
-
-In this example, the contents of arr1 and arr2 are expanded and combined into a new array.
 
 **Example 2: Spread in Objects**
 ```javascript
@@ -235,8 +313,14 @@ const mergedObj = { ...obj1, ...obj2 };
 console.log(mergedObj);  // Outputs: { name: "Alice", age: 25, country: "USA" }
 ```
 
-**Nullish Coalescing Operator (??)**
-The nullish coalescing operator (??) returns the right-hand operand when the left-hand operand is null or undefined, but not when it is a falsy value like 0, false, or '' (empty string). This is useful when you want to provide a default value only if the value is null or undefined.
+
+## Nullish Coalescing Operator (??)
+
+**Explanation:**
+
+The nullish coalescing operator (`??`) returns the right-hand operand when the left-hand operand is `null` or `undefined`, but not when it is a falsy value like `0` or `false`.
+
+**Example:**
 
 ```javascript
 let name = null;
@@ -257,71 +341,71 @@ console.log(value || defaultValue);  // Outputs: 10 (because 0 is falsy)
 console.log(value ?? defaultValue);  // Outputs: 0 (because 0 is not null or undefined)
 ```
 
-### **Scope:**  
+## Scope:
 
-**Local Scope:**  
-Variables declared within a function are local to that function.
+### Global Scope
 
-```javascript
-function localScope() {
-  var localVar = "I'm local!";
-  console.log(localVar);  // Outputs: I'm local
-}
-localScope();
-console.log(window.localVar);  // Outputs: undefined
-```
-**Global Scope:**  
-Variables declared outside any function become properties of the global object (`window` in browsers).
+**Explanation:**
+
+Variables declared outside of any function are in the global scope and can be accessed anywhere in the code. In browsers, these variables are attached to the global window object.
+
+**Example:**
+
 
 ```javascript
 var globalVar = "I'm global!";
 console.log(window.globalVar);  // Outputs: I'm global
 ```
 
-**Block Scope:**  
-Variables declared outside any function become properties of the global object (`window` in browsers).
+
+### Local Scope:*
+
+
+**Explanation:**
+
+Variables declared within a function are local to that function and cannot be accessed from outside.
+
+**Example:**
+
 
 ```javascript
-if () {
-    // block scpoe
+function localScope() {
+  var localVar = "I'm local!";
+  console.log(localVar);  // Outputs: "I'm local!"
 }
+localScope();
+console.log(window.localVar);  // Outputs: undefined
 ```
 
-**Context (`this`):**  
-The value of `this` depends on how a function is called.
+### Block Scope:
+
+
+
+**Explanation:**
+
+Block-scoped variables (`let` and `const`) are only accessible within the block where they are defined. This is especially important in loops and conditionals.
+
+**Example:**
+
 
 ```javascript
-const obj = {
-  name: "Alice",
-  sayName() {
-    console.log(this.name);
-  }
-};
-
-obj.sayName();  // Outputs: Alice
-const extracted = obj.sayName;
-extracted();  // Outputs: undefined (in strict mode)
-```
-
-**Closures (Gotchas with Loops):**  
-Closures remember the environment in which they were created, leading to unexpected behavior in loops.
-
-```javascript
-for (var i = 0; i < 3; i++) { // doesn't have block scope
-  setTimeout(() => console.log(i), 100);
+if (true) {
+  let blockScopedVar = "I'm block scoped!";
 }
-// Outputs: 3, 3, 3 (because `i` is shared)
+console.log(blockScopedVar);  // Error: blockScopedVar is not defined
+
 ```
 
-```javascript
-for (let i = 0; i < 3; i++) { // block scope
-  setTimeout(() => console.log(i), 100);
-}
-// Outputs: 0, 1, 2 (let creates block-scoped variables)
-```
+## Closures and `this` Context
 
-**Private Fields with Closures**
-Explanation: Closures can emulate private fields in JavaScript.
+### Closures
+
+
+**Explanation:**
+
+Closures are functions that retain access to variables from their outer scope, even after the outer function has finished executing.
+
+**Example:**
 
 
 ```javascript
@@ -337,9 +421,58 @@ counter.increment();
 console.log(counter.getCount());  // Outputs: 1
 ```
 
-#### **Hoisting**
 
-Explanation: Variable and function declarations are moved (hoisted) to the top of their scope, but assignments are not.
+### `this` Context
+
+
+**Explanation:**
+
+The value of `this` depends on how a function is called. It refers to the object that is executing the current function.
+**Example:**
+
+```javascript
+const obj = {
+  name: "Alice",
+  sayName() {
+    console.log(this.name);
+  }
+};
+
+obj.sayName();  // Outputs: Alice
+const extracted = obj.sayName;
+extracted();  // Outputs: undefined (in strict mode)
+```
+
+### Closures (Gotchas with Loops):
+
+
+**Explanation:**
+
+Closures remember the environment in which they were created, leading to unexpected behavior in loops.
+
+**Example:**
+
+```javascript
+for (var i = 0; i < 3; i++) { // doesn't have block scope
+  setTimeout(() => console.log(i), 100);
+}
+// Outputs: 3, 3, 3 (because `i` is shared)
+```
+
+```javascript
+for (let i = 0; i < 3; i++) { // block scope
+  setTimeout(() => console.log(i), 100);
+}
+// Outputs: 0, 1, 2 (let creates block-scoped variables)
+```
+
+## Hoisting
+
+**Explanation:**
+
+JavaScript hoists function and variable declarations to the top of their scope before execution, but assignments are not hoisted.
+
+**Example:**
 
 ```javascript
 console.log(a);  // Outputs: undefined
@@ -350,12 +483,32 @@ function sayHello() {
 }
 ```
 
-### **Functional Programming in JavaScript**
+### Function Hoisting
 
-**filter, map, reduce, flat, flatMap**
 
-**`filter`:**  
-Creates a new array with all elements that pass the test.
+**Explanation:**
+
+JavaScript hoists function and variable declarations to the top of their scope before execution, but assignments are not hoisted.
+
+**Example:**
+
+```javascript
+sayHello();  // Outputs: "Hello"
+
+function sayHello() {
+  console.log("Hello");
+}
+```
+
+## Functional Programming in JavaScript
+
+### Array Methods: `filter`, `map`, `reduce`, `flat`, and `flatMap`
+
+**Explanation:**
+
+Functional programming focuses on writing pure functions that avoid side effects. JavaScript's array methods like filter(), map(), reduce(), and flatMap() align with this paradigm.
+
+**`filter()` Example:**
 
 ```javascript
 const nums = [1, 2, 3, 4, 5];
@@ -363,48 +516,43 @@ const evens = nums.filter(n => n % 2 === 0);
 console.log(evens);  // Outputs: [2, 4]
 ```
 
-**`map`:**  
-Transforms each element in an array.
+**`map` Example:**  
 
 ```javascript
 const doubled = nums.map(n => n * 2);
 console.log(doubled);  // Outputs: [2, 4, 6, 8, 10]
 ```
 
-**`reduce`:**  
-Reduces the array to a single value.
+**`reduce` Example:**  
 
 ```javascript
 const sum = nums.reduce((acc, curr) => acc + curr, 0);
 console.log(sum);  // Outputs: 15
 ```
 
-**`flat`:**  
-Flattens nested arrays.
+**`flat` Example:**  
 
 ```javascript
 const nested = [1, [2, 3], [4, [5]]];
 console.log(nested.flat(2));  // Outputs: [1, 2, 3, 4, 5]
 ```
 
-**`flatMap`:**  
-Maps and flattens the array.
-
-```javascript
-const nested = [1, [2, 3], [4, [5]]];
-console.log(nested.flat(2));  // Outputs: [1, 2, 3, 4, 5]
-```
-
-```javascript
-const nested = [1, [2, 3], [4, [5]]];
-console.log(nested.flat(2));  // Outputs: [1, 2, 3, 4, 5]
-```
-
+**`flatMap`  Example:**  
 ```javascript
 const flatMapped = nums.flatMap(n => [n, n * 2]);
 console.log(flatMapped);  // Outputs: [1, 2, 2, 4, 3, 6, 4, 8, 5, 10]
 ```
-Function Composition (Using Lodash):
+
+## Function Composition & Pipelining
+
+### Function Composition
+
+**Explanation:**
+
+Function composition involves combining multiple functions so that the output of one function becomes the input to the next.
+
+**Example:**
+
 ```javascript
 const compose = (f, g) => x => f(g(x));
 
@@ -414,7 +562,15 @@ const double = x => x * 2;
 const add1ThenDouble = compose(double, add1);
 console.log(add1ThenDouble(5));  // Outputs: 12
 ```
-Function Pipelining
+
+### Function Pipelining
+
+**Explanation:**
+
+Function pipelining is similar to composition but uses a left-to-right execution order.
+
+**Example:**
+
 ```javascript
 const add = x => x + 1;
 const double = x => x * 2;
@@ -422,7 +578,16 @@ const compose = (...fs) => (x) => fs.reduce(f => f(a), x)
 const composed = compose(add, double);  // Using lodash's flow for composition
 console.log(composed(3));  // Outputs: 8 (3 + 1 = 4, then 4 * 2 = 8)
 ```
-Using Currying to Create Reusable Functions
+
+
+**Explanation:**
+
+Currying is a functional programming technique where a function that takes multiple arguments is transformed into a sequence of functions, each taking a single argument. The curried version of a function allows partial application by pre-setting some arguments, similar to partial application but more naturally integrated.
+
+Currying makes functions more reusable and flexible by enabling you to generate new functions with some arguments pre-defined. This technique is particularly useful for creating specialized functions from a generic one.
+
+**Example:**
+
 ```javascript
 const multiply = a => b => a * b;
 
@@ -433,7 +598,40 @@ console.log(double(5));  // Outputs: 10
 console.log(triple(5));  // Outputs: 15
 
 ```
-Partial Application
+### How It Works:
+- The `multiply` function is written using currying, where it returns another function that takes a single argument.
+- When `multiply(2)` is called, it returns a new function that expects one argument `(b)`. In this case, a is pre-set to `2`.
+- Similarly, `multiply(3)` creates a function where `a` is pre-set to `3`.
+- When `double(5)` is called, the inner function multiplies `2 * 5` to give `10`.
+- When `triple(5)` is called, the inner function multiplies `3 * 5` to give `15`.
+
+### Benefits of Currying:
+
+- **Reusability**: You can create multiple specific functions from a single generic function (e.g., `double`, `triple` from `multiply`).
+- **Modularity**: Currying encourages the breakdown of complex functions into smaller, more manageable functions.
+- **Partial Application**: Currying naturally supports partial application, making it easier to set some arguments in advance.
+
+**Example with Multiple Arguments:**
+
+```javascript
+const add = a => b => c => a + b + c;
+
+const addFive = add(5);  // Pre-fills 'a' with 5
+console.log(addFive(3)(2));  // Outputs: 10 (5 + 3 + 2)
+
+```
+
+### Partial Application
+
+**Explanation:**
+
+Partial application is a technique in functional programming where you create a new function by pre-filling some arguments of an existing function. It allows you to "lock in" certain arguments of a function, generating a new function that requires fewer arguments.
+
+In JavaScript, you can achieve partial application using Function.prototype.bind(). The bind() method returns a new function with some of its arguments pre-set.
+
+**Example:**
+
+
 ```javascript
 function multiply(a, b, c) {
   return a * b * c;
@@ -443,7 +641,26 @@ const partiallyAppliedMultiply = multiply.bind(null, 2);
 console.log(partiallyAppliedMultiply(3, 4));  // Outputs: 24
 
 ```
-Memoization of a Function
+### How It Works:
+
+- The multiply function takes three arguments: `a`, `b`, and `c`.
+- Using `bind()`, we create a new function partiallyAppliedMultiply, where the first argument `(a)` is permanently set to `2`.
+- When we call `partiallyAppliedMultiply(3, 4)`, it applies `2` as the first argument, `3` as the second argument `(b)`, and `4` as the third argument `(c)`.
+- The result is `2 * 3 * 4 = 24`.
+
+
+### Memoization of a Function
+
+
+**Explanation:**
+
+Memoization is an optimization technique that stores the results of expensive function calls and returns the cached result when the same inputs occur again. It is useful for functions that are called repeatedly with the same arguments, such as recursive algorithms.
+
+In JavaScript, we can memoize functions by using a cache (often an object) to store previously computed results. When a memoized function is called, it first checks if the result for the given arguments exists in the cache. If it does, it returns the cached result. If not, it computes the result, stores it in the cache, and then returns it.
+
+**Example:**
+
+
 ```javascript
 function memoize(fn) {
   const cache = {};
@@ -465,11 +682,27 @@ const factorial = memoize(function(n) {
 
 console.log(factorial(5));  // Outputs: 120
 console.log(factorial(5));  // Outputs: 120 (cached result)
-
-
 ```
 
-Using a Higher-Order Function
+### How It Works:
+
+- The `memoize()` function wraps a given function `(fn)` and adds caching behavior.
+- The cache object stores previously computed results using the function arguments as the key.
+- If the same function is called with the same arguments, it retrieves the result from the cache instead of recomputing it.
+- In this case, the `factorial` function is memoized. The first call to `factorial(5)` computes and stores the result, while subsequent calls to `factorial(5)` return the cached value.
+
+### Benefits:
+
+- Memoization improves performance for expensive or recursive operations by avoiding redundant calculations.
+- It is especially effective in dynamic programming problems, such as Fibonacci sequences or factorials, where overlapping subproblems occur.
+
+### Higher-Order Functions
+
+**Explanation:**
+
+Higher-order functions are functions that take other functions as arguments or return functions.
+
+**Example:**
 
 ```javascript
 function higherOrder(fn) {
@@ -500,7 +733,16 @@ async function fetchData() {
 fetchData();
 ```
 
-**Event Loop, setImmediate, Microtasks**
+## Event Loop, setImmediate, Microtasks
+
+### Promises & `async/await`
+
+**Explanation:**
+
+Promises and `async/await` simplify handling asynchronous operations by avoiding deeply nested callbacks.
+
+**Example:**
+
 
 ```javascript
 setImmediate(() => console.log('setImmediate'));
@@ -511,9 +753,16 @@ console.log('Sync log');
 // Outputs: Sync log, Promise microtask, setTimeout, setImmediate
 ```
 
-**try-catch-finally**
+### try-catch-finally
 
-The try block allows you to test code for errors, catch is used to handle the error, and finally executes after the try-catch, regardless of whether an error occurred or not.
+
+**Explanation:**
+
+The try block allows you to test code for errors, catch is used to handle the error, and `finally` executes after the try-catch, regardless of whether an error occurred or not.
+
+**Example:**
+
+
 ```javascript
 try {
   // Code that may throw an error
@@ -532,8 +781,16 @@ try {
 // This runs no matter what
 
 ```
-Explanation:
-If an error occurs inside the try block, the catch block is executed. The catch block gets an error object that contains information about the error.
+
+### If an error occurs inside the try block
+
+**Explanation:**
+
+the `catch` block is executed. The `catch` block gets an error object that contains information about the error.
+
+**Example:**
+
+
 ```javascript
 try {
   // Code that will throw an error
@@ -552,7 +809,7 @@ try {
 
 ```
 
-**finally Block Always Executes**
+### `finally` Block Always Executes
 
 ```javascript
 try {
@@ -569,9 +826,15 @@ try {
 // Cleaning up...
 
 ```
-Returning Values from try, catch, and finally
+
+### Returning Values from `try`, `catch`, and `finally`
+
+**Explanation:**
 
 You can return values from try, catch, or finally, but finally will override the return values from try or catch if it also contains a return statement.
+
+**Example:**
+
 
 ```javascript
 function testReturn() {
@@ -587,7 +850,16 @@ function testReturn() {
 console.log(testReturn());  // Outputs: "Returned from finally"
 
 ```
+
+
+### Nested `try`, `catch`, and `finally`
+
+**Explanation:**
+
 You can nest try-catch-finally blocks inside each other for more granular error handling.
+
+**Example:**
+
 
 ```javascript
 try {
