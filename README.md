@@ -1,1 +1,618 @@
-<hr><h2><strong>Scope and Immutability</strong></h2><h3><strong>Immutability of Strings</strong></h3><p>In JavaScript, <strong>strings</strong> are immutable, meaning once a string is created, it cannot be altered. When attempting to modify a string, JavaScript creates a new string instead of changing the original.</p><pre class="!overflow-visible"><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative"><div class="flex items-center text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9">javascript</div><div class="sticky top-9 md:top-[5.75rem]"><div class="absolute bottom-0 right-2 flex h-9 items-center"><div class="flex items-center rounded bg-token-main-surface-secondary px-2 font-sans text-xs text-token-text-secondary"><span class="" data-state="closed"><button class="flex gap-1 items-center py-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-javascript"><span class="hljs-keyword">let</span> str = <span class="hljs-string">"Hello"</span>;\nstr[<span class="hljs-number">0</span>] = <span class="hljs-string">"h"</span>;  <span class="hljs-comment">// Trying to modify the first character</span>\n<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(str);  <span class="hljs-comment">// Outputs: "Hello" (unchanged)</span>\n</code></div></div></pre><p>Explanation:<br>Even though you attempt to modify <code>str[0]</code>, the original string remains unchanged since strings are immutable in JavaScript.</p><hr><h3><strong>Immutability of Objects</strong></h3><p>Unlike strings, <strong>objects</strong> are mutable in JavaScript. When modifying an object, the original object can change, as they are passed by reference.</p><pre class="!overflow-visible"><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative"><div class="flex items-center text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9">javascript</div><div class="sticky top-9 md:top-[5.75rem]"><div class="absolute bottom-0 right-2 flex h-9 items-center"><div class="flex items-center rounded bg-token-main-surface-secondary px-2 font-sans text-xs text-token-text-secondary"><span class="" data-state="closed"><button class="flex gap-1 items-center py-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-javascript"><span class="hljs-keyword">let</span> obj = { <span class="hljs-attr">name</span>: <span class="hljs-string">"John"</span> };\n<span class="hljs-keyword">let</span> objCopy = obj;  <span class="hljs-comment">// `objCopy` references the same object</span>\nobjCopy.<span class="hljs-property">name</span> = <span class="hljs-string">"Doe"</span>;  <span class="hljs-comment">// Modifying the copy</span>\n<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(obj.<span class="hljs-property">name</span>);  <span class="hljs-comment">// Outputs: "Doe"</span>\n</code></div></div></pre><p>Explanation:<br>Here, both <code>obj</code> and <code>objCopy</code> point to the same object in memory. Changing <code>objCopy.name</code> affects the original object <code>obj</code>.</p><hr><h3><strong>Preventing Mutation with <code>Object.freeze()</code></strong></h3><p>To prevent mutation, JavaScript provides <code>Object.freeze()</code>, which makes an object immutable at the <strong>top level</strong> (not deeply).</p><pre class="!overflow-visible"><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative"><div class="flex items-center text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9">javascript</div><div class="sticky top-9 md:top-[5.75rem]"><div class="absolute bottom-0 right-2 flex h-9 items-center"><div class="flex items-center rounded bg-token-main-surface-secondary px-2 font-sans text-xs text-token-text-secondary"><span class="" data-state="closed"><button class="flex gap-1 items-center py-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-javascript"><span class="hljs-keyword">let</span> obj = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">freeze</span>({ <span class="hljs-attr">name</span>: <span class="hljs-string">"John"</span>, <span class="hljs-attr">details</span>: { <span class="hljs-attr">age</span>: <span class="hljs-number">30</span> } });\nobj.<span class="hljs-property">name</span> = <span class="hljs-string">"Doe"</span>;  <span class="hljs-comment">// Fails silently</span>\nobj.<span class="hljs-property">details</span>.<span class="hljs-property">age</span> = <span class="hljs-number">40</span>;  <span class="hljs-comment">// Succeeds, because `freeze` is shallow</span>\n<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(obj.<span class="hljs-property">name</span>);  <span class="hljs-comment">// Outputs: "John" (unchanged)</span>\n<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(obj.<span class="hljs-property">details</span>.<span class="hljs-property">age</span>);  <span class="hljs-comment">// Outputs: 40 (nested mutation allowed)</span>\n</code></div></div></pre><p>Explanation:<br><code>Object.freeze()</code> only freezes the first level of the object. Nested objects are still mutable.</p><hr><h3><strong>Shallow Copy vs Deep Copy of Objects</strong></h3><ol><li><strong>Shallow Copy</strong>: A shallow copy duplicates only the first level of properties. Nested objects remain as references.</li></ol><pre class="!overflow-visible"><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative"><div class="flex items-center text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9">javascript</div><div class="sticky top-9 md:top-[5.75rem]"><div class="absolute bottom-0 right-2 flex h-9 items-center"><div class="flex items-center rounded bg-token-main-surface-secondary px-2 font-sans text-xs text-token-text-secondary"><span class="" data-state="closed"><button class="flex gap-1 items-center py-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-javascript"><span class="hljs-keyword">let</span> person = { <span class="hljs-attr">name</span>: <span class="hljs-string">"John"</span>, <span class="hljs-attr">address</span>: { <span class="hljs-attr">city</span>: <span class="hljs-string">"New York"</span> } };\n<span class="hljs-keyword">let</span> shallowCopy = { ...person };\nshallowCopy.<span class="hljs-property">address</span>.<span class="hljs-property">city</span> = <span class="hljs-string">"San Francisco"</span>;\n<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(person.<span class="hljs-property">address</span>.<span class="hljs-property">city</span>);  <span class="hljs-comment">// Outputs: "San Francisco"</span>\n</code></div></div></pre><p>Explanation:<br>The <code>spread operator</code> (<code>...</code>) creates a shallow copy. Since <code>address</code> is an object, the original <code>person</code> object is also affected when modifying <code>shallowCopy</code>.</p><ol start="2"><li><strong>Deep Copy</strong>: A deep copy duplicates all levels of an object, so changes to the copy do not affect the original.</li></ol><pre class="!overflow-visible"><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative"><div class="flex items-center text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9">javascript</div><div class="sticky top-9 md:top-[5.75rem]"><div class="absolute bottom-0 right-2 flex h-9 items-center"><div class="flex items-center rounded bg-token-main-surface-secondary px-2 font-sans text-xs text-token-text-secondary"><span class="" data-state="closed"><button class="flex gap-1 items-center py-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-javascript"><span class="hljs-keyword">let</span> deepCopy = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(person));  <span class="hljs-comment">// Deep copy for non-circular objects</span>\ndeepCopy.<span class="hljs-property">address</span>.<span class="hljs-property">city</span> = <span class="hljs-string">"Los Angeles"</span>;\n<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(person.<span class="hljs-property">address</span>.<span class="hljs-property">city</span>);  <span class="hljs-comment">// Outputs: "San Francisco"</span>\n</code></div></div></pre><p>Explanation:<br>The <code>JSON.parse(JSON.stringify())</code> approach creates a true deep copy for objects that do not have functions or circular references.</p><hr><h2><strong>Object Operations</strong></h2><h3><strong>Object Destructuring</strong></h3><p>Destructuring allows you to extract properties from an object and assign them to variables in a more concise way.</p><pre class="!overflow-visible"><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative"><div class="flex items-center text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9">javascript</div><div class="sticky top-9 md:top-[5.75rem]"><div class="absolute bottom-0 right-2 flex h-9 items-center"><div class="flex items-center rounded bg-token-main-surface-secondary px-2 font-sans text-xs text-token-text-secondary"><span class="" data-state="closed"><button class="flex gap-1 items-center py-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-javascript"><span class="hljs-keyword">const</span> person = { <span class="hljs-attr">name</span>: <span class="hljs-string">"Bob"</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">35</span> };\n<span class="hljs-keyword">const</span> { name, age } = person;\n<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(name);  <span class="hljs-comment">// Outputs: "Bob"</span>\n<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(age);  <span class="hljs-comment">// Outputs: 35</span>\n</code></div></div></pre><p>Explanation:<br>The <code>name</code> and <code>age</code> properties of the <code>person</code> object are directly assigned to the corresponding variables.</p><hr><h3><strong>Object Property Shorthand</strong></h3><p>When the property name and the variable name are the same, you can use the shorthand syntax.</p><pre class="!overflow-visible"><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative"><div class="flex items-center text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9">javascript</div><div class="sticky top-9 md:top-[5.75rem]"><div class="absolute bottom-0 right-2 flex h-9 items-center"><div class="flex items-center rounded bg-token-main-surface-secondary px-2 font-sans text-xs text-token-text-secondary"><span class="" data-state="closed"><button class="flex gap-1 items-center py-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-javascript"><span class="hljs-keyword">const</span> firstName = <span class="hljs-string">"Charlie"</span>;\n<span class="hljs-keyword">const</span> age = <span class="hljs-number">28</span>;\n\n<span class="hljs-keyword">const</span> person = { firstName, age };  <span class="hljs-comment">// Shorthand syntax</span>\n<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(person);  <span class="hljs-comment">// Outputs: { firstName: "Charlie", age: 28 }</span>\n</code></div></div></pre><p>Explanation:<br>This syntax eliminates redundancy by allowing the property names to be the same as the variable names.</p><hr><h3><strong>Merging Objects</strong></h3><p>To merge multiple objects, the spread operator (<code>...</code>) can be used.</p><pre class="!overflow-visible"><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative"><div class="flex items-center text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9">javascript</div><div class="sticky top-9 md:top-[5.75rem]"><div class="absolute bottom-0 right-2 flex h-9 items-center"><div class="flex items-center rounded bg-token-main-surface-secondary px-2 font-sans text-xs text-token-text-secondary"><span class="" data-state="closed"><button class="flex gap-1 items-center py-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-javascript"><span class="hljs-keyword">const</span> objA = { <span class="hljs-attr">a</span>: <span class="hljs-number">1</span> };\n<span class="hljs-keyword">const</span> objB = { <span class="hljs-attr">b</span>: <span class="hljs-number">2</span> };\n<span class="hljs-keyword">const</span> merged = { ...objA, ...objB };\n<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(merged);  <span class="hljs-comment">// Outputs: { a: 1, b: 2 }</span>\n</code></div></div></pre><p>Explanation:<br>The properties from <code>objA</code> and <code>objB</code> are merged into a new object. For deeply nested objects, you should use <code>Lodash</code> or a similar utility for deep merging.</p><hr><h2><strong>Type Coercion</strong></h2><h3><strong>String Coercion</strong></h3><p>JavaScript automatically converts non-string values to strings when they are used in a string context.</p><pre class="!overflow-visible"><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative"><div class="flex items-center text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9">javascript</div><div class="sticky top-9 md:top-[5.75rem]"><div class="absolute bottom-0 right-2 flex h-9 items-center"><div class="flex items-center rounded bg-token-main-surface-secondary px-2 font-sans text-xs text-token-text-secondary"><span class="" data-state="closed"><button class="flex gap-1 items-center py-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-javascript"><span class="hljs-keyword">let</span> result = <span class="hljs-number">123</span> + <span class="hljs-string">"456"</span>;\n<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result);  <span class="hljs-comment">// Outputs: "123456"</span>\n</code></div></div></pre><p>Explanation:<br>The number <code>123</code> is coerced into a string and concatenated with <code>"456"</code>.</p><hr><h3><strong>Number Coercion</strong></h3><p>In a numeric context, JavaScript will attempt to convert values to numbers.</p><pre class="!overflow-visible"><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative"><div class="flex items-center text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9">javascript</div><div class="sticky top-9 md:top-[5.75rem]"><div class="absolute bottom-0 right-2 flex h-9 items-center"><div class="flex items-center rounded bg-token-main-surface-secondary px-2 font-sans text-xs text-token-text-secondary"><span class="" data-state="closed"><button class="flex gap-1 items-center py-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-javascript"><span class="hljs-keyword">let</span> result = <span class="hljs-string">"5"</span> * <span class="hljs-number">2</span>;\n<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result);  <span class="hljs-comment">// Outputs: 10</span>\n</code></div></div></pre><p>Explanation:<br>The string <code>"5"</code> is coerced into the number <code>5</code>, and the multiplication results in <code>10</code>.</p><hr><h3><strong>Boolean Coercion</strong></h3><p>Values are coerced to booleans in conditional contexts (e.g., <code>if</code> statements). JavaScript has <strong>falsy</strong> values:</p><ul><li><code>false</code></li><li><code>0</code></li><li><code>""</code> (empty string)</li><li><code>null</code></li><li><code>undefined</code></li><li><code>NaN</code></li></ul><p>Everything else is <strong>truthy</strong>.</p><pre class="!overflow-visible"><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative"><div class="flex items-center text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9">javascript</div><div class="sticky top-9 md:top-[5.75rem]"><div class="absolute bottom-0 right-2 flex h-9 items-center"><div class="flex items-center rounded bg-token-main-surface-secondary px-2 font-sans text-xs text-token-text-secondary"><span class="" data-state="closed"><button class="flex gap-1 items-center py-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-javascript"><span class="hljs-keyword">if</span> (<span class="hljs-number">0</span>) {\n  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Will not be logged"</span>);\n} <span class="hljs-keyword">else</span> {\n  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Falsy value"</span>);  <span class="hljs-comment">// This will be logged</span>\n}\n</code></div></div></pre><hr><h3><strong>Double vs Triple Equals</strong></h3><ul><li><code>==</code> (double equals) allows type coercion.</li><li><code>===</code> (triple equals) does <strong>not</strong> allow coercion.</li></ul><pre class="!overflow-visible"><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative"><div class="flex items-center text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9">javascript</div><div class="sticky top-9 md:top-[5.75rem]"><div class="absolute bottom-0 right-2 flex h-9 items-center"><div class="flex items-center rounded bg-token-main-surface-secondary px-2 font-sans text-xs text-token-text-secondary"><span class="" data-state="closed"><button class="flex gap-1 items-center py-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">5</span> == <span class="hljs-string">"5"</span>);  <span class="hljs-comment">// Outputs: true (coerced to same type)</span>\n<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">5</span> === <span class="hljs-string">"5"</span>);  <span class="hljs-comment">// Outputs: false (no coercion)</span>\n</code></div></div></pre><hr><h3><strong>Coercion in Logical Operators</strong></h3><p>Logical operators (<code>||</code> and <code>&amp;&amp;</code>) perform coercion, but return the actual value rather than a boolean.</p><pre class="!overflow-visible"><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative"><div class="flex items-center text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9">javascript</div><div class="sticky top-9 md:top-[5.75rem]"><div class="absolute bottom-0 right-2 flex h-9 items-center"><div class="flex items-center rounded bg-token-main-surface-secondary px-2 font-sans text-xs text-token-text-secondary"><span class="" data-state="closed"><button class="flex gap-1 items-center py-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">0</span> || <span class="hljs-string">"default"</span>);  <span class="hljs-comment">// Outputs: "default"</span>\n<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">1</span> &amp;&amp; <span class="hljs-string">"next"</span>);  <span class="hljs-comment">// Outputs: "next"</span>\n</code></div></div></pre><p>Explanation:<br><code>0</code> is falsy, so <code>"default"</code> is returned. <code>1</code> is truthy, so <code>"next"</code> is returned.</p><hr><h3><strong>Special Case: 3 &gt; 2 &gt; 1</strong></h3><p>JavaScript evaluates the comparison step-by-step:</p><pre class="!overflow-visible"><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative"><div class="flex items-center text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9">javascript</div><div class="sticky top-9 md:top-[5.75rem]"><div class="absolute bottom-0 right-2 flex h-9 items-center"><div class="flex items-center rounded bg-token-main-surface-secondary px-2 font-sans text-xs text-token-text-secondary"><span class="" data-state="closed"><button class="flex gap-1 items-center py-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">3</span> &gt; <span class="hljs-number">2</span> &gt; <span class="hljs-number">1</span>);  <span class="hljs-comment">// Outputs: false</span>\n</code></div></div></pre><p>Explanation:<br><code>3 &gt; 2</code> evaluates to <code>true</code>, which is coerced to <code>1</code>, and then <code>1 &gt; 1</code> evaluates to <code>false</code>.</p><hr><h2><strong>Scope</strong></h2><h3><strong>Global vs Local Scope</strong></h3><ol><li><strong>Local Scope</strong>: Variables declared inside a function are scoped to that function.</li></ol><pre class="!overflow-visible"><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative"><div class="flex items-center text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9">javascript</div><div class="sticky top-9 md:top-[5.75rem]"><div class="absolute bottom-0 right-2 flex h-9 items-center"><div class="flex items-center rounded bg-token-main-surface-secondary px-2 font-sans text-xs text-token-text-secondary"><span class="" data-state="closed"><button class="flex gap-1 items-center py-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">localScope</span>(<span class="hljs-params"></span>) {\n  <span class="hljs-keyword">var</span> localVar = <span class="hljs-string">"I\'m local!"</span>;\n  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(localVar);  <span class="hljs-comment">// Outputs: "I\'m local"</span>\n}\n<span class="hljs-title function_">localScope</span>();\n<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(localVar);  <span class="hljs-comment">// Error: localVar is not defined</span>\n</code></div></div></pre><ol start="2"><li><strong>Global Scope</strong>: Variables declared outside any function are global.</li></ol><pre class="!overflow-visible"><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative"><div class="flex items-center text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9">javascript</div><div class="sticky top-9 md:top-[5.75rem]"><div class="absolute bottom-0 right-2 flex h-9 items-center"><div class="flex items-center rounded bg-token-main-surface-secondary px-2 font-sans text-xs text-token-text-secondary"><span class="" data-state="closed"><button class="flex gap-1 items-center py-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-javascript"><span class="hljs-keyword">var</span> globalVar = <span class="hljs-string">"I\'m global!"</span>;\n<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(globalVar);  <span class="hljs-comment">// Outputs: "I\'m global"</span>\n</code></div></div></pre><hr><h3><strong>Block Scope</strong></h3><p>Variables declared with <code>let</code> or <code>const</code> inside a block (e.g., <code>if</code>, <code>for</code>) are block-scoped.</p><pre class="!overflow-visible"><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative"><div class="flex items-center text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9">javascript</div><div class="sticky top-9 md:top-[5.75rem]"><div class="absolute bottom-0 right-2 flex h-9 items-center"><div class="flex items-center rounded bg-token-main-surface-secondary px-2 font-sans text-xs text-token-text-secondary"><span class="" data-state="closed"><button class="flex gap-1 items-center py-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-javascript"><span class="hljs-keyword">if</span> (<span class="hljs-literal">true</span>) {\n  <span class="hljs-keyword">let</span> blockScoped = <span class="hljs-string">"Only in block"</span>;\n  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(blockScoped);  <span class="hljs-comment">// Outputs: "Only in block"</span>\n}\n<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(blockScoped);  <span class="hljs-comment">// Error: blockScoped is not defined</span>\n</code></div></div></pre><hr><h3><strong>Closures and Loops</strong></h3><p>Closures "remember" the environment they were created in, which can lead to unexpected behavior with loops.</p><pre class="!overflow-visible"><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative"><div class="flex items-center text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9">javascript</div><div class="sticky top-9 md:top-[5.75rem]"><div class="absolute bottom-0 right-2 flex h-9 items-center"><div class="flex items-center rounded bg-token-main-surface-secondary px-2 font-sans text-xs text-token-text-secondary"><span class="" data-state="closed"><button class="flex gap-1 items-center py-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-javascript"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) {\n  <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(i), <span class="hljs-number">100</span>);\n}\n<span class="hljs-comment">// Outputs: 3, 3, 3 (because `i` is shared)</span>\n</code></div></div></pre><p>Solution: Use <code>let</code> to create block-scoped variables.</p><pre class="!overflow-visible"><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative"><div class="flex items-center text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9">javascript</div><div class="sticky top-9 md:top-[5.75rem]"><div class="absolute bottom-0 right-2 flex h-9 items-center"><div class="flex items-center rounded bg-token-main-surface-secondary px-2 font-sans text-xs text-token-text-secondary"><span class="" data-state="closed"><button class="flex gap-1 items-center py-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-javascript"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) {\n  <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(i), <span class="hljs-number">100</span>);\n}\n<span class="hljs-comment">// Outputs: 0, 1, 2 (because `let` is block-scoped)</span>\n</code></div></div></pre><hr><h3><strong>Private Fields with Closures</strong></h3><p>Closures can emulate private fields by creating variables that are only accessible within a function.</p><pre class="!overflow-visible"><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative"><div class="flex items-center text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md h-9">javascript</div><div class="sticky top-9 md:top-[5.75rem]"><div class="absolute bottom-0 right-2 flex h-9 items-center"><div class="flex items-center rounded bg-token-main-surface-secondary px-2 font-sans text-xs text-token-text-secondary"><span class="" data-state="closed"><button class="flex gap-1 items-center py-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">createCounter</span>(<span class="hljs-params"></span>) {\n  <span class="hljs-keyword">let</span> count = <span class="hljs-number">0</span>;\n  <span class="hljs-keyword">return</span> {\n    <span class="hljs-title function_">increment</span>(<span class="hljs-params"></span>) { count++; },\n    <span class="hljs-title function_">getCount</span>(<span class="hljs-params"></span>) { <span class="hljs-keyword">return</span> count; }\n  };\n}\n\n<span class="hljs-keyword">let</span> counter = <span class="hljs-title function_">createCounter</span>();\ncounter.<span class="hljs-title function_">increment</span>();\n<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(counter.<span class="hljs-title function_">getCount</span>());  <span class="hljs-comment">// Outputs: 1</span>\n</code></div></div></pre><p>Explanation:<br>The <code>count</code> variable is only accessible through the <code>increment</code> and <code>getCount</code> methods, emulating private fields.</p><hr><h3><strong>Hoisting</strong></h3><p>JavaScript <strong>hoists</strong> declarations to the top of the scope, but only <strong>initializes</strong> them at the point of assignment.</p>
+### **Scope**
+
+#### **JS CORE**
+
+Immutability of Strings
+Explanation:
+Primitive types like strings are immutable. Once a string is created, it cannot be altered. When you try to change a string, a new string is created instead.
+```javascript
+let str = "Hello";
+str[0] = "h";  // Trying to change the first character
+console.log(str);  // Outputs: "Hello" (the original string remains unchanged)
+
+```
+
+Immutability Objects Explanation: 
+Primitive values are immutable, whereas objects are mutable. This leads to different behaviors when modifying or assigning values.
+
+```javascript
+let obj = {name: "John"};
+let objCopy = obj;  // objCopy references the same object
+objCopy.name = "Doe";
+console.log(obj.name);  // Outputs: "Doe", object is mutable and was modified
+
+```
+Prevent Mutation (Immutable Operations):
+```javascript
+// freeze only first level
+let obj = Object.freeze({name: "John", obj: {name: "Jhon"}});
+obj.name = "Doe";  // Fails silently (in strict mode throws an error)
+obj.obj.name = "Doe";  // will allow modify
+console.log(obj.name);  // Outputs: "John"
+console.log(obj.obj.name);  // Outputs: "Doe"
+```
+
+Copying Objects
+
+spread will copy only first level and deep object will remain reference
+```javascript
+const shallowCopy = { ...person };
+shallowCopy.age = 40;
+console.log(person.age);  // Outputs: 35 (original object remains unchanged)
+console.log(shallowCopy.age);  // Outputs: 40 (copy is modified)
+
+```
+For a deep copy of objects containing nested objects, you need to use libraries like Lodash or structured cloning methods, as Object.assign() and the spread operator only perform shallow copies.
+
+```javascript
+// this approach will not copy function
+const deepCopy = JSON.parse(JSON.stringify(person));  // Deep copies only non-circular objects
+```
+
+Object Destructuring
+
+Destructuring allows you to extract values from an object and assign them to variables in a concise way.
+
+```javascript
+const { name, age } = person;
+console.log(name);  // Outputs: "Bob"
+console.log(age);  // Outputs: 35
+
+```
+
+```javascript
+const { name: personName, age: personAge } = person;
+console.log(personName);  // Outputs: "Bob"
+console.log(personAge);  // Outputs: 35
+```
+
+Object Property Shorthand
+
+```javascript
+const firstName = "Charlie";
+const age = 28;
+
+const person = { firstName, age };  // Shorthand syntax
+console.log(person);  // Outputs: { firstName: "Charlie", age: 28 }
+```
+
+Merging Objects
+
+```javascript
+// but again if you have deep structure then it's preferable use cloneDeep
+const mergedWithSpread = { ...objA, ...objB };
+console.log(mergedWithSpread);  // Outputs: { a: 1, b: 2 }
+
+```
+
+### **Coercion**
+String Coercion: When a non-string value is used in a context where a string is expected, JavaScript will convert it to a string.
+
+```javascript
+let result = 123 + "456";  
+console.log(result);  // Outputs: "123456"
+// Explanation: The number 123 is coerced to a string and concatenated with "456".
+```
+
+Number Coercion: When a non-number value is used in a numeric context, JavaScript will attempt to convert it to a number.
+
+
+```javascript
+let result = "5" * 2;
+console.log(result);  // Outputs: 10
+// Explanation: The string "5" is coerced to the number 5, then multiplied by 2.
+```
+
+Boolean Coercion: JavaScript converts values to booleans in contexts such as conditions in if statements. The following values are falsy:
+
+- false
+- 0
+- "" (empty string)
+- null
+- undefined
+- NaN (Not-a-Number)
+- Everything else is truthy.
+
+```javascript
+if (0) {
+  console.log("Won't be logged");
+} else {
+  console.log("Falsy value");  // This will be logged
+}
+
+if ("Hello") {
+  console.log("Truthy value");  // This will be logged
+}
+```
+
+Coercion in Comparisons (Double vs Triple Equals):
+
+- == (double equals) allows coercion before comparing, while === (triple equals) does not.
+
+```javascript
+console.log(5 == "5");  // Outputs: true
+// Explanation: The string "5" is coerced into the number 5 before comparison.
+
+console.log(5 === "5");  // Outputs: false
+// Explanation: No coercion happens here, so number 5 is not equal to string "5".
+```
+
+Coercion in Logical Operators (|| and &&): Logical operators (|| and &&) often perform coercion by converting values to booleans, but they return the actual value rather than a boolean.
+
+```javascript
+console.log(0 || "default");  // Outputs: "default"
+// Explanation: 0 is falsy, so "default" is returned.
+
+console.log(1 && "next");  // Outputs: "next"
+// Explanation: 1 is truthy, so "next" is returned.
+```
+Coercion with null and undefined: When null or undefined are used in arithmetic operations or comparisons, they are coerced as well.
+
+
+```javascript
+console.log(null + 1);  // Outputs: 1
+// Explanation: `null` is coerced to 0 in numeric context.
+
+console.log(undefined + 1);  // Outputs: NaN
+// Explanation: `undefined` is coerced to `NaN` in numeric context, resulting in `NaN`.
+```
+
+
+**Coercion and 3 > 2 > 1**
+Explanation: When JavaScript compares 3 > 2 > 1, it performs comparisons step by step.
+
+Code Example:
+
+```javascript
+console.log(3 > 2 > 1);  // Outputs: false
+// Explanation: 3 > 2 evaluates to true (which is 1 in JS), then 1 > 1 is false
+```
+
+Convert Object to Primitive (valueOf/Symbol.toPrimitive)
+Explanation: Objects can define how they convert to primitive values using valueOf or Symbol.toPrimitive.
+
+```javascript
+let obj = {
+  [Symbol.toPrimitive](hint) {
+    if (hint === 'string') return 'Object as string';
+    return 123;
+  }
+};
+console.log(`${obj}`);  // Outputs: 'Object as string'
+console.log(+obj);  // Outputs: 123
+
+```
+
+Rest Operator
+
+The rest operator (...) allows you to collect all remaining elements into an array or object. It is commonly used in function parameters and object/array destructuring.
+
+**Example 1**: Rest in Function Parameters
+The rest operator gathers all remaining arguments into an array.
+
+```javascript
+// In this example, ...numbers collects all the arguments into an array, which can then be processed using reduce().
+function sum(...numbers) {
+  return numbers.reduce((acc, num) => acc + num, 0);
+}
+
+console.log(sum(1, 2, 3, 4));  // Outputs: 10
+```
+
+**Example 2**: Rest in Array Destructuring
+You can use the rest operator to gather the "rest" of the elements in an array during destructuring.
+
+```javascript
+const [first, ...rest] = [1, 2, 3, 4, 5];
+console.log(first);  // Outputs: 1
+console.log(rest);  // Outputs: [2, 3, 4, 5]
+
+```
+
+Spread Operator
+
+Explanation:
+The spread operator (...) allows you to expand an array or object. It is useful for copying arrays/objects and merging them.
+
+**Example 1: Spread in Arrays**
+
+The spread operator can be used to spread elements of one array into another.
+
+```javascript
+const arr1 = [1, 2, 3];
+const arr2 = [4, 5, 6];
+const combined = [...arr1, ...arr2];
+console.log(combined);  // Outputs: [1, 2, 3, 4, 5, 6]
+```
+
+In this example, the contents of arr1 and arr2 are expanded and combined into a new array.
+
+**Example 2: Spread in Objects**
+```javascript
+const obj1 = { name: "Alice", age: 25 };
+const obj2 = { country: "USA" };
+const mergedObj = { ...obj1, ...obj2 };
+console.log(mergedObj);  // Outputs: { name: "Alice", age: 25, country: "USA" }
+```
+
+**Nullish Coalescing Operator (??)**
+The nullish coalescing operator (??) returns the right-hand operand when the left-hand operand is null or undefined, but not when it is a falsy value like 0, false, or '' (empty string). This is useful when you want to provide a default value only if the value is null or undefined.
+
+```javascript
+let name = null;
+let surname = null;
+let defaultName = "Unknown";
+
+console.log(name ?? defaultName);  // Outputs: "Unknown"
+console.log(surname ?? defaultName);  // Outputs: "Unknown"
+// Explanation: Since `name` is `null`, `defaultName` is returned.
+
+
+// Unlike the logical OR (||), ?? only considers null and undefined as nullish values, not falsy values like 0 or false.
+
+let value = 0;
+let defaultValue = 10;
+
+console.log(value || defaultValue);  // Outputs: 10 (because 0 is falsy)
+console.log(value ?? defaultValue);  // Outputs: 0 (because 0 is not null or undefined)
+```
+
+### **Scope:**  
+
+**Local Scope:**  
+Variables declared within a function are local to that function.
+
+```javascript
+function localScope() {
+  var localVar = "I'm local!";
+  console.log(localVar);  // Outputs: I'm local
+}
+localScope();
+console.log(window.localVar);  // Outputs: undefined
+```
+**Global Scope:**  
+Variables declared outside any function become properties of the global object (`window` in browsers).
+
+```javascript
+var globalVar = "I'm global!";
+console.log(window.globalVar);  // Outputs: I'm global
+```
+
+**Block Scope:**  
+Variables declared outside any function become properties of the global object (`window` in browsers).
+
+```javascript
+if () {
+    // block scpoe
+}
+```
+
+**Context (`this`):**  
+The value of `this` depends on how a function is called.
+
+```javascript
+const obj = {
+  name: "Alice",
+  sayName() {
+    console.log(this.name);
+  }
+};
+
+obj.sayName();  // Outputs: Alice
+const extracted = obj.sayName;
+extracted();  // Outputs: undefined (in strict mode)
+```
+
+**Closures (Gotchas with Loops):**  
+Closures remember the environment in which they were created, leading to unexpected behavior in loops.
+
+```javascript
+for (var i = 0; i < 3; i++) { // doesn't have block scope
+  setTimeout(() => console.log(i), 100);
+}
+// Outputs: 3, 3, 3 (because `i` is shared)
+```
+
+```javascript
+for (let i = 0; i < 3; i++) { // block scope
+  setTimeout(() => console.log(i), 100);
+}
+// Outputs: 0, 1, 2 (let creates block-scoped variables)
+```
+
+**Private Fields with Closures**
+Explanation: Closures can emulate private fields in JavaScript.
+
+
+```javascript
+function createCounter() {
+  let count = 0;
+  return {
+    increment() { count++; },
+    getCount() { return count; }
+  };
+}
+let counter = createCounter();
+counter.increment();
+console.log(counter.getCount());  // Outputs: 1
+```
+
+#### **Hoisting**
+
+Explanation: Variable and function declarations are moved (hoisted) to the top of their scope, but assignments are not.
+
+```javascript
+console.log(a);  // Outputs: undefined
+var a = 10;
+
+function sayHello() {
+  console.log("Hello");
+}
+```
+
+### **Functional Programming in JavaScript**
+
+**filter, map, reduce, flat, flatMap**
+
+**`filter`:**  
+Creates a new array with all elements that pass the test.
+
+```javascript
+const nums = [1, 2, 3, 4, 5];
+const evens = nums.filter(n => n % 2 === 0);
+console.log(evens);  // Outputs: [2, 4]
+```
+
+**`map`:**  
+Transforms each element in an array.
+
+```javascript
+const doubled = nums.map(n => n * 2);
+console.log(doubled);  // Outputs: [2, 4, 6, 8, 10]
+```
+
+**`reduce`:**  
+Reduces the array to a single value.
+
+```javascript
+const sum = nums.reduce((acc, curr) => acc + curr, 0);
+console.log(sum);  // Outputs: 15
+```
+
+**`flat`:**  
+Flattens nested arrays.
+
+```javascript
+const nested = [1, [2, 3], [4, [5]]];
+console.log(nested.flat(2));  // Outputs: [1, 2, 3, 4, 5]
+```
+
+**`flatMap`:**  
+Maps and flattens the array.
+
+```javascript
+const nested = [1, [2, 3], [4, [5]]];
+console.log(nested.flat(2));  // Outputs: [1, 2, 3, 4, 5]
+```
+
+```javascript
+const nested = [1, [2, 3], [4, [5]]];
+console.log(nested.flat(2));  // Outputs: [1, 2, 3, 4, 5]
+```
+
+```javascript
+const flatMapped = nums.flatMap(n => [n, n * 2]);
+console.log(flatMapped);  // Outputs: [1, 2, 2, 4, 3, 6, 4, 8, 5, 10]
+```
+Function Composition (Using Lodash):
+```javascript
+const compose = (f, g) => x => f(g(x));
+
+const add1 = x => x + 1;
+const double = x => x * 2;
+
+const add1ThenDouble = compose(double, add1);
+console.log(add1ThenDouble(5));  // Outputs: 12
+```
+Function Pipelining
+```javascript
+const add = x => x + 1;
+const double = x => x * 2;
+const compose = (...fs) => (x) => fs.reduce(f => f(a), x)
+const composed = compose(add, double);  // Using lodash's flow for composition
+console.log(composed(3));  // Outputs: 8 (3 + 1 = 4, then 4 * 2 = 8)
+```
+Using Currying to Create Reusable Functions
+```javascript
+const multiply = a => b => a * b;
+
+const double = multiply(2);
+const triple = multiply(3);
+
+console.log(double(5));  // Outputs: 10
+console.log(triple(5));  // Outputs: 15
+
+```
+Partial Application
+```javascript
+function multiply(a, b, c) {
+  return a * b * c;
+}
+
+const partiallyAppliedMultiply = multiply.bind(null, 2);
+console.log(partiallyAppliedMultiply(3, 4));  // Outputs: 24
+
+```
+Memoization of a Function
+```javascript
+function memoize(fn) {
+  const cache = {};
+  return function(...args) {
+    const key = JSON.stringify(args);
+    if (cache[key]) {
+      return cache[key];
+    }
+    const result = fn(...args);
+    cache[key] = result;
+    return result;
+  };
+}
+
+const factorial = memoize(function(n) {
+  if (n <= 1) return 1;
+  return n * factorial(n - 1);
+});
+
+console.log(factorial(5));  // Outputs: 120
+console.log(factorial(5));  // Outputs: 120 (cached result)
+
+
+```
+
+Using a Higher-Order Function
+
+```javascript
+function higherOrder(fn) {
+  return function(x) {
+    return fn(x) * 2;
+  };
+}
+
+function square(x) {
+  return x * x;
+}
+
+const doubleSquare = higherOrder(square);
+console.log(doubleSquare(3));  // Outputs: 18 (square(3) * 2 = 9 * 2 = 18)
+
+```
+
+### **Asynchronous Execution**
+
+**Promises, async/await**
+
+```javascript
+async function fetchData() {
+  const data = await new Promise(resolve => setTimeout(() => resolve("Data"), 1000));
+  console.log(data);  // Outputs: Data
+}
+
+fetchData();
+```
+
+**Event Loop, setImmediate, Microtasks**
+
+```javascript
+setImmediate(() => console.log('setImmediate'));
+setTimeout(() => console.log('setTimeout'), 0);
+Promise.resolve().then(() => console.log('Promise microtask'));
+console.log('Sync log');
+
+// Outputs: Sync log, Promise microtask, setTimeout, setImmediate
+```
+
+**try-catch-finally**
+
+The try block allows you to test code for errors, catch is used to handle the error, and finally executes after the try-catch, regardless of whether an error occurred or not.
+```javascript
+try {
+  // Code that may throw an error
+  let x = 5 / 0;
+  console.log(x);
+} catch (error) {
+  // Handling the error
+  console.log("An error occurred:", error.message);
+} finally {
+  // Code that always runs
+  console.log("This runs no matter what");
+}
+
+// Outputs:
+// Infinity
+// This runs no matter what
+
+```
+Explanation:
+If an error occurs inside the try block, the catch block is executed. The catch block gets an error object that contains information about the error.
+```javascript
+try {
+  // Code that will throw an error
+  let result = JSON.parse('{"name": "John"');  // Missing closing }
+} catch (error) {
+  // Error is handled here
+  console.log("Error caught:", error.message);
+} finally {
+  console.log("This will run regardless of error");
+}
+
+// Outputs:
+// Error caught: Unexpected end of JSON input
+// This will run regardless of error
+
+
+```
+
+**finally Block Always Executes**
+
+```javascript
+try {
+  // No error here
+  console.log("Executing try block");
+} catch (error) {
+  console.log("This will not run since there's no error");
+} finally {
+  console.log("Cleaning up...");  // This always runs
+}
+
+// Outputs:
+// Executing try block
+// Cleaning up...
+
+```
+Returning Values from try, catch, and finally
+
+You can return values from try, catch, or finally, but finally will override the return values from try or catch if it also contains a return statement.
+
+```javascript
+function testReturn() {
+  try {
+    return "Returned from try";
+  } catch (error) {
+    return "Returned from catch";
+  } finally {
+    return "Returned from finally";  // This overrides the try/catch return
+  }
+}
+
+console.log(testReturn());  // Outputs: "Returned from finally"
+
+```
+You can nest try-catch-finally blocks inside each other for more granular error handling.
+
+```javascript
+try {
+  console.log("Outer try block");
+
+  try {
+    throw new Error("Inner error");
+  } catch (error) {
+    console.log("Caught inner error:", error.message);
+  } finally {
+    console.log("Inner finally");
+  }
+
+} catch (error) {
+  console.log("Caught outer error");
+} finally {
+  console.log("Outer finally");
+}
+
+// Outputs:
+// Outer try block
+// Caught inner error: Inner error
+// Inner finally
+// Outer finally
+
+```
+
+
