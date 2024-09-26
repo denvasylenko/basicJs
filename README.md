@@ -1,0 +1,2 @@
+# basicJs
+javascript basic
