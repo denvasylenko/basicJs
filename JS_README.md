@@ -136,7 +136,7 @@ console.log(0.1 + 0.2 > 0.3);  // Outputs: true
 The .toFixed(1) method is used to round a number to one decimal place and returns a string representation of that rounded value.
 
 ```javascript
-console.log((0.1 + 0.2).toFixed(1) > 0.3);  // Outputs: true
+console.log((0.1 + 0.2).toFixed(1) > 0.3);  // Outputs: false
 ```
 
 ## Coercion
