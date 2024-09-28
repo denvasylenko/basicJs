@@ -116,8 +116,28 @@ console.log(merged);  // Outputs: { a: 1, b: 2 }
 
 **Explanation:**
 
-For deep copying/merging, libraries like Lodash’s cloneDeep or native cloning methods like structuredClone() (available in newer browsers) are required.
+For deep copying/merging, libraries like Lodash’s cloneDeep or native cloning methods like `structuredClone()` (available in newer browsers) are required.
 
+### Floating-point arithmetic 
+
+**Explanation:**
+
+In JavaScript, floating-point numbers are represented using a format called IEEE 754. This representation can introduce rounding errors for certain decimal values, especially when they cannot be represented exactly in binary.
+
+0.1 and 0.2 are represented in binary with some precision errors due to their repeating nature in binary form.
+0.1 + 0.2 in JavaScript actually evaluates to 0.30000000000000004.
+
+**Example:**
+
+```javascript
+console.log(0.1 + 0.2 > 0.3);  // Outputs: true
+```
+
+The .toFixed(1) method is used to round a number to one decimal place and returns a string representation of that rounded value.
+
+```javascript
+console.log((0.1 + 0.2).toFixed(1) > 0.3);  // Outputs: true
+```
 
 ## Coercion
 
