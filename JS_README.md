@@ -118,7 +118,7 @@ console.log(merged);  // Outputs: { a: 1, b: 2 }
 
 For deep copying/merging, libraries like Lodash’s cloneDeep or native cloning methods like `structuredClone()` (available in newer browsers) are required.
 
-### Floating-point arithmetic 
+## Floating-point arithmetic 
 
 **Explanation:**
 
